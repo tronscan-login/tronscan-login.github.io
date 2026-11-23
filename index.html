@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Explore TRONSCAN, the TRON blockchain explorer. Search blocks, transactions, accounts, tokens, smart contracts and governance data."
+    />
+    <meta
+      name="keywords"
+      content="TRONSCAN, TRON explorer, TRX, TRC20, blockchain explorer, transactions, tokens"
+    />
+    <meta name="theme-color" content="#111114" />
+    <title>TRONSCAN™ | Explore the TRON Blockchain</title>
+    <style>
+      :root {
+        --bg: #101014;
+        --panel: #19191f;
+        --line: #303039;
+        --text: #f5f5f7;
+        --muted: #a5a5ae;
+        --red: #eb0029;
+        --red2: #ff3154;
+        --green: #25c685;
+        --max: 1160px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          15px/1.65 Inter,
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Arial,
+          sans-serif;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .container {
+        width: min(var(--max), calc(100% - 44px));
+        margin: auto;
+      }
+      .top {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: #111114ed;
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav {
+        height: 74px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        font-size: 1.24rem;
+        font-weight: 850;
+        letter-spacing: -0.04em;
+      }
+      .logo {
+        width: 36px;
+        height: 36px;
+        background: var(--red);
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+      }
+      .logo svg {
+        width: 23px;
+      }
+      .links {
+        display: flex;
+        gap: 26px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .links a:hover {
+        color: white;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 17px;
+        border-radius: 9px;
+        background: var(--red);
+        color: white;
+        font-weight: 750;
+        border: 1px solid #ff4564;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background: var(--red2);
+      }
+      .ghost {
+        background: #ffffff08;
+        border-color: #ffffff20;
+      }
+      .hero {
+        padding: 76px 0 54px;
+        background:
+          radial-gradient(ellipse at 85% 5%, #eb00291b, transparent 35%),
+          linear-gradient(180deg, #151519, var(--bg));
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        align-items: center;
+        gap: 48px;
+      }
+      .tag {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        padding: 6px 11px;
+        border: 1px solid #eb002955;
+        background: #eb002914;
+        color: #ff7189;
+        border-radius: 99px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+      .tag i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green);
+      }
+      h1 {
+        font-size: clamp(2.8rem, 6vw, 5rem);
+        line-height: 1.03;
+        letter-spacing: -0.065em;
+        margin: 21px 0;
+      }
+      .accent {
+        color: var(--red2);
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: 1.08rem;
+        max-width: 590px;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 25px;
+      }
+      .visual {
+        position: relative;
+        min-height: 340px;
+        display: grid;
+        place-items: center;
+      }
+      .ring {
+        width: 270px;
+        height: 270px;
+        border: 1px solid #eb002977;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        box-shadow:
+          0 0 90px #eb00291c,
+          inset 0 0 60px #eb00290c;
+        position: relative;
+      }
+      .ring:before,
+      .ring:after {
+        content: "";
+        position: absolute;
+        inset: 23px -35px;
+        border: 1px solid #ffffff24;
+        border-radius: 50%;
+        transform: rotate(30deg);
+      }
+      .ring:after {
+        inset: 48px -54px;
+        transform: rotate(-38deg);
+        border-color: #eb002966;
+      }
+      .tron-mark {
+        width: 115px;
+        height: 115px;
+        background: linear-gradient(145deg, #ff3154, #c90025);
+        clip-path: polygon(50% 0, 100% 24%, 83% 100%, 17% 100%, 0 24%);
+        display: grid;
+        place-items: center;
+      }
+      .tron-mark svg {
+        width: 72px;
+      }
+      .float {
+        position: absolute;
+        background: #1b1b22;
+        border: 1px solid #ffffff20;
+        border-radius: 12px;
+        padding: 12px 15px;
+      }
+      .float small {
+        display: block;
+        color: var(--muted);
+        font-size: 0.7rem;
+      }
+      .f1 {
+        top: 24px;
+        right: 0;
+      }
+      .f2 {
+        bottom: 20px;
+        left: 0;
+      }
+      .section {
+        padding: 66px 0;
+      }
+      .head {
+        max-width: 700px;
+        margin-bottom: 30px;
+      }
+      .kicker {
+        color: #ff647d;
+        font-size: 0.74rem;
+        font-weight: 850;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+      }
+      h2 {
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        line-height: 1.12;
+        letter-spacing: -0.045em;
+        margin: 9px 0 12px;
+      }
+      .head p,
+      .muted {
+        color: var(--muted);
+        margin: 0;
+      }
+      .search {
+        display: flex;
+        gap: 10px;
+        padding: 13px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        max-width: 780px;
+        margin-top: 27px;
+      }
+      .search input {
+        flex: 1;
+        min-width: 0;
+        background: transparent;
+        border: 0;
+        outline: 0;
+        color: white;
+        font: inherit;
+        padding: 4px 9px;
+      }
+      .search input::placeholder {
+        color: #777780;
+      }
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 13px;
+        margin-top: 28px;
+      }
+      .metric {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        padding: 18px;
+      }
+      .metric span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      .metric b {
+        display: block;
+        font-size: 1.1rem;
+        margin-top: 5px;
+      }
+      .metric em {
+        display: block;
+        color: #85858e;
+        font-size: 0.7rem;
+        font-style: normal;
+        margin-top: 4px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+      .card {
+        background: linear-gradient(145deg, #1c1c23, #17171d);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 23px;
+        min-height: 170px;
+      }
+      .ico {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        background: #eb00291c;
+        color: #ff7189;
+        border-radius: 11px;
+        margin-bottom: 16px;
+        font-size: 1.3rem;
+      }
+      .card h3 {
+        font-size: 1.05rem;
+        margin: 0 0 7px;
+      }
+      .card p {
+        font-size: 0.89rem;
+        color: var(--muted);
+        margin: 0;
+      }
+      .split {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 42px;
+        align-items: start;
+      }
+      .listbox {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 24px;
+      }
+      .list {
+        display: grid;
+        gap: 18px;
+      }
+      .item {
+        display: grid;
+        grid-template-columns: 36px 1fr;
+        gap: 13px;
+      }
+      .num {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: #eb00291f;
+        color: #ff7189;
+        display: grid;
+        place-items: center;
+        font-weight: 850;
+      }
+      .item h3 {
+        font-size: 0.98rem;
+        margin: 0 0 3px;
+      }
+      .item p {
+        color: var(--muted);
+        font-size: 0.87rem;
+        margin: 0;
+      }
+      .callout {
+        padding: 16px 18px;
+        border: 1px solid #eb002944;
+        background: #eb002910;
+        border-radius: 12px;
+        color: #c7c4ca;
+        font-size: 0.88rem;
+        margin-top: 20px;
+      }
+      .callout strong {
+        color: #ff8397;
+      }
+      .twocol {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+      .resource {
+        display: block;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        padding: 18px;
+      }
+      .resource:hover {
+        border-color: #eb002988;
+      }
+      .resource b {
+        display: block;
+        color: #ff7189;
+        margin-bottom: 4px;
+      }
+      .resource span {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .cta {
+        text-align: center;
+        border: 1px solid #eb002944;
+        border-radius: 20px;
+        padding: 48px 24px;
+        background:
+          radial-gradient(ellipse at 50% 0%, #eb00291c, transparent 70%),
+          #18181e;
+      }
+      .cta p {
+        max-width: 620px;
+        margin: 0 auto 22px;
+        color: var(--muted);
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        padding: 25px 0;
+        color: #85858e;
+        font-size: 0.8rem;
+      }
+      .foot {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .footlinks {
+        display: flex;
+        gap: 17px;
+        flex-wrap: wrap;
+      }
+      @media (max-width: 850px) {
+        .links {
+          display: none;
+        }
+        .hero-grid,
+        .split {
+          grid-template-columns: 1fr;
+        }
+        .visual {
+          min-height: 300px;
+        }
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 580px) {
+        .container {
+          width: calc(100% - 30px);
+        }
+        .nav {
+          height: 65px;
+        }
+        .nav > .btn {
+          font-size: 0.8rem;
+          padding: 9px 11px;
+        }
+        .hero {
+          padding: 54px 0 35px;
+        }
+        .visual {
+          transform: scale(0.88);
+          margin: -10px 0;
+        }
+        .metrics {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .grid,
+        .twocol {
+          grid-template-columns: 1fr;
+        }
+        .section {
+          padding: 50px 0;
+        }
+        .search {
+          flex-wrap: wrap;
+        }
+        .search input {
+          flex-basis: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="container nav">
+        <a class="brand" href="#home"
+          ><span class="logo"
+            ><svg viewBox="0 0 40 40" fill="none">
+              <path
+                d="M9 5h22L20 35 9 5Z"
+                stroke="white"
+                stroke-width="3"
+                stroke-linejoin="round"
+              />
+              <path d="M9 5h22L20 17 9 5Z" fill="white" />
+              <path d="m9 5 11 12L20 35" stroke="white" stroke-width="2" /></svg
+          ></span>
+          TRONSCAN</a
+        >
+        <nav class="links">
+          <a href="#explorer">Explorer</a><a href="#features">Features</a
+          ><a href="#data">Network data</a><a href="#resources">Resources</a>
+        </nav>
+        <a
+          class="btn"
+          href="https://tronscan.org/"
+          target="_blank"
+          rel="noopener"
+          >Open TRONSCAN ↗</a
+        >
+      </div>
+    </header>
+    <main id="home">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <span class="tag"><i></i> TRON blockchain explorer</span>
+            <h1>
+              Explore the chain.<br /><span class="accent"
+                >Verify every move.</span
+              >
+            </h1>
+            <p>
+              TRONSCAN is a blockchain explorer and data platform for the TRON
+              network. Search transactions, inspect blocks and accounts, explore
+              tokens and smart contracts, and follow network activity and
+              governance.
+            </p>
+            <div class="actions">
+              <a
+                class="btn"
+                href="https://tronscan.org/"
+                target="_blank"
+                rel="noopener"
+                >Launch Explorer ↗</a
+              ><a
+                class="btn ghost"
+                href="https://docs.tronscan.org/"
+                target="_blank"
+                rel="noopener"
+                >Developer docs</a
+              >
+            </div>
+            <form class="search" id="searchForm">
+              <input
+                id="searchInput"
+                placeholder="Search address / transaction / block / token"
+                aria-label="Search TRONSCAN"
+              /><button class="btn" type="submit">Search ↗</button>
+            </form>
+            <p style="font-size: 0.76rem; color: #777780; margin-top: 8px">
+              Search opens the official TRONSCAN explorer. Verify addresses and
+              transaction details before acting.
+            </p>
+          </div>
+          <div class="visual" aria-hidden="true">
+            <div class="ring">
+              <div class="tron-mark">
+                <svg viewBox="0 0 80 80" fill="none">
+                  <path
+                    d="M15 12h50L40 68 15 12Z"
+                    stroke="white"
+                    stroke-width="4"
+                    stroke-linejoin="round"
+                  />
+                  <path d="M15 12h50L40 34 15 12Z" fill="white" />
+                  <path d="m15 12 25 22v34" stroke="white" stroke-width="3" />
+                </svg>
+              </div>
+            </div>
+            <div class="float f1">
+              <small>Network</small><b>TRON Mainnet</b>
+            </div>
+            <div class="float f2">
+              <small>Explore</small><b>Blocks · Tokens · Accounts</b>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="explorer">
+        <div class="container">
+          <div class="head">
+            <div class="kicker">Blockchain overview</div>
+            <h2>On-chain information, made searchable.</h2>
+            <p>
+              TRONSCAN provides a unified interface for examining public TRON
+              blockchain data. Use the live explorer for current figures; these
+              cards describe data types and intentionally do not fabricate live
+              metrics.
+            </p>
+          </div>
+          <div class="metrics">
+            <div class="metric">
+              <span>Blocks</span><b>Latest chain data</b
+              ><em>Height, producer, timestamp</em>
+            </div>
+            <div class="metric">
+              <span>Transactions</span><b>Transaction history</b
+              ><em>Status, hash, fees, transfers</em>
+            </div>
+            <div class="metric">
+              <span>Accounts</span><b>Address activity</b
+              ><em>Balances, assets, resources</em>
+            </div>
+            <div class="metric">
+              <span>Tokens</span><b>TRC-10 / TRC-20</b
+              ><em>Supply, holders, transfers</em>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="features">
+        <div class="container">
+          <div class="head">
+            <div class="kicker">Explorer tools</div>
+            <h2>Explore every layer of TRON.</h2>
+            <p>
+              From an individual transaction to broad network analytics,
+              TRONSCAN organizes on-chain information into dedicated explorer
+              sections.
+            </p>
+          </div>
+          <div class="grid">
+            <article class="card">
+              <div class="ico">▦</div>
+              <h3>Blocks and transactions</h3>
+              <p>
+                Inspect block height, block producer, timestamps, transaction
+                counts, hashes, confirmation status and transaction details.
+              </p>
+            </article>
+            <article class="card">
+              <div class="ico">◉</div>
+              <h3>Accounts and transfers</h3>
+              <p>
+                Look up public addresses, account balances, token holdings, TRX
+                transfers and other visible on-chain activity.
+              </p>
+            </article>
+            <article class="card">
+              <div class="ico">◇</div>
+              <h3>Token tracker</h3>
+              <p>
+                Explore TRC-10 and TRC-20 assets, token contracts, supply
+                information, holders and transfer activity.
+              </p>
+            </article>
+            <article class="card">
+              <div class="ico">⌘</div>
+              <h3>Smart contracts</h3>
+              <p>
+                Review contract addresses, verified source code where available,
+                contract interactions and related transactions.
+              </p>
+            </article>
+            <article class="card">
+              <div class="ico">▥</div>
+              <h3>Charts and analytics</h3>
+              <p>
+                Follow network trends such as account activity, transaction
+                patterns, supply, protocol revenue and resource consumption.
+              </p>
+            </article>
+            <article class="card">
+              <div class="ico">♜</div>
+              <h3>Governance and voting</h3>
+              <p>
+                Review Super Representatives, votes, staking information,
+                network parameters and governance proposals.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="data">
+        <div class="container split">
+          <div>
+            <div class="kicker">How to use it</div>
+            <h2>From search to verification.</h2>
+            <p class="muted">
+              A blockchain explorer helps make public chain activity easier to
+              inspect. A typical lookup follows a few simple steps.
+            </p>
+            <div class="callout">
+              <strong>Important:</strong> TRONSCAN is an explorer, not proof
+              that a website, token or wallet request is safe. Independently
+              verify contract addresses and be cautious of impersonation tokens
+              and phishing links.
+            </div>
+          </div>
+          <div class="listbox">
+            <div class="list">
+              <div class="item">
+                <div class="num">01</div>
+                <div>
+                  <h3>Enter a search term</h3>
+                  <p>
+                    Use a transaction ID, TRON address, block number, token name
+                    or contract address.
+                  </p>
+                </div>
+              </div>
+              <div class="item">
+                <div class="num">02</div>
+                <div>
+                  <h3>Open the matching record</h3>
+                  <p>
+                    Check that the address, transaction hash or contract matches
+                    what you intended to inspect.
+                  </p>
+                </div>
+              </div>
+              <div class="item">
+                <div class="num">03</div>
+                <div>
+                  <h3>Review the details</h3>
+                  <p>
+                    Inspect status, timestamp, sender, recipient, amount, token,
+                    fees and relevant contract data.
+                  </p>
+                </div>
+              </div>
+              <div class="item">
+                <div class="num">04</div>
+                <div>
+                  <h3>Cross-check the result</h3>
+                  <p>
+                    Use official project documentation and trusted sources when
+                    assessing tokens, contracts or applications.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <div class="head">
+            <div class="kicker">Beyond the website</div>
+            <h2>Tools for developers and analysts.</h2>
+            <p>
+              TRONSCAN data can also be accessed programmatically for
+              applications, dashboards, research and operational monitoring.
+            </p>
+          </div>
+          <div class="grid">
+            <article class="card">
+              <h3>TRONSCAN API</h3>
+              <p>
+                Query account, transaction, block, contract, token, Super
+                Representative and analytics data through API endpoints. Check
+                current authentication and rate-limit requirements in the
+                documentation.
+              </p>
+            </article>
+            <article class="card">
+              <h3>MCP and AI tools</h3>
+              <p>
+                TRONSCAN documentation describes an MCP server and
+                agent-oriented tools for querying blockchain data through
+                compatible AI clients.
+              </p>
+            </article>
+            <article class="card">
+              <h3>CLI and integrations</h3>
+              <p>
+                Use command-line and developer resources for scripts, dashboards
+                and integrations that need structured TRONSCAN data.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="resources">
+        <div class="container">
+          <div class="head">
+            <div class="kicker">Official references</div>
+            <h2>Continue exploring TRON.</h2>
+            <p>
+              Use these primary resources for current network information,
+              technical documentation and developer integration details.
+            </p>
+          </div>
+          <div class="twocol">
+            <a
+              class="resource"
+              href="https://tronscan.org/"
+              target="_blank"
+              rel="noopener"
+              ><b>TRONSCAN Explorer ↗</b
+              ><span
+                >Search live blocks, transactions, accounts, tokens and
+                contracts.</span
+              ></a
+            >
+            <a
+              class="resource"
+              href="https://developers.tron.network/"
+              target="_blank"
+              rel="noopener"
+              ><b>TRON Developer Hub ↗</b
+              ><span
+                >Core protocol documentation, APIs and developer guides.</span
+              ></a
+            >
+            <a
+              class="resource"
+              href="https://docs.tronscan.org/"
+              target="_blank"
+              rel="noopener"
+              ><b>TRONSCAN Documentation ↗</b
+              ><span
+                >Explorer features, API, MCP, Skills and CLI
+                documentation.</span
+              ></a
+            >
+            <a
+              class="resource"
+              href="https://github.com/tronprotocol"
+              target="_blank"
+              rel="noopener"
+              ><b>TRON on GitHub ↗</b
+              ><span
+                >Open-source repositories and protocol-related code.</span
+              ></a
+            >
+          </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <div class="cta">
+            <div class="kicker">Start exploring</div>
+            <h2>Check the chain for yourself.</h2>
+            <p>
+              Open the official TRONSCAN explorer to view current blockchain
+              data. This informational page is independently created and is not
+              the official TRONSCAN service.
+            </p>
+            <a
+              class="btn"
+              href="https://tronscan.org/"
+              target="_blank"
+              rel="noopener"
+              >Visit TRONSCAN ↗</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="container foot">
+        <div>
+          © 2026 TRONSCAN information guide · Independent informational website.
+        </div>
+        <div class="footlinks">
+          <a href="https://tronscan.org/">Official Explorer</a
+          ><a href="https://developers.tron.network/">TRON Developers</a
+          ><a href="https://docs.tronscan.org/">Documentation</a>
+        </div>
+      </div>
+    </footer>
+    <script>
+      document
+        .getElementById("searchForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          const q = document.getElementById("searchInput").value.trim();
+          if (!q) {
+            document.getElementById("searchInput").focus();
+            return;
+          }
+          window.open(
+            "https://tronscan.org/#/search/" + encodeURIComponent(q),
+            "_blank",
+            "noopener",
+          );
+        });
+    </script>
+  </body>
+</html>
